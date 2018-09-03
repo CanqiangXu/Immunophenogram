@@ -29,13 +29,13 @@ $Sample{'SRR3184304'}='Pt35';
 $Sample{'SRR3184305'}='Pt37';
 $Sample{'SRR3184306'}='Pt38';
 
-open I,"IPS_genes.txt" or die();
-while(<I>){
-	chomp;
-	$_=(split/\t/)[0];
-	$Mark{'#'}{$_}=$_;
-}
-close I;
+#open I,"IPS_genes.txt" or die();
+#while(<I>){
+#	chomp;
+#	$_=(split/\t/)[0];
+#	$Mark{'#'}{$_}=$_;
+#}
+#close I;
 
 foreach $x(glob "*.genes.results"){
 	$x=~m/(SRR\d+)/;
@@ -45,29 +45,38 @@ foreach $x(glob "*.genes.results"){
 		chomp;
 		@a=split/\t/;
 		$a[0]=(split/\_/,$a[0])[-1];
-		unless($Mark{'#'}{$a[0]}){next;}
+        #unless($Mark{'#'}{$a[0]}){next;}
         $IPS{'#'}{$a[0]}=$a[0];
-		$IPS{$Sample}{$a[0]}=$a[-2];
+		$IPS{$a[0]}{$Sample}=$a[-2];
 	}
 	close I;
 }
 
 
-foreach(sort keys %IPS){
-	if($_ eq '#'){next;}
-	print "\t$Sample{$_}";
+#foreach(sort keys %IPS){
+#    if($_ eq '#'){next;}
+#    print "\t$Sample{$_}";
+#}
+#print "\n";
+#open I,"IPS_genes.txt";
+#<I>;
+#while(<I>){
+#        chomp;
+#    $_=(split/\t/)[0];
+#    unless($IPS{'#'}{$_}){next;}
+#    foreach $x(sort keys %IPS){
+#        if($x eq '#'){print $_;next;}
+#         print "\t$IPS{$x}{$_}";
+#    }
+#    print "\n";
+#}
+#close I;
+
+foreach (sort keys %IPS){
+    print $_;
+    foreach $x(sort keys %Sample){
+        print "\t$IPS{$_}{$x}";
+    }
+    print "\n";
 }
-print "\n";
-open I,"IPS_genes.txt";
-<I>;
-while(<I>){
-    	chomp;
-	$_=(split/\t/)[0];
-    unless($IPS{'#'}{$_}){next;}
-	foreach $x(sort keys %IPS){
-		if($x eq '#'){print $_;next;}
-		 print "\t$IPS{$x}{$_}";
-	}
-	print "\n";
-}
-close I;
+
