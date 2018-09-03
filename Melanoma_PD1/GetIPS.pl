@@ -39,15 +39,16 @@ $Sample{'SRR3184306'}='Pt38';
 
 foreach $x(glob "*.genes.results"){
 	$x=~m/(SRR\d+)/;
-	$Sample=$1;
+	$S=$1;
 	open I,"<$x";
+    <I>;
 	while(<I>){
 		chomp;
 		@a=split/\t/;
 		$a[0]=(split/\_/,$a[0])[-1];
         #unless($Mark{'#'}{$a[0]}){next;}
-        $IPS{'#'}{$a[0]}=$a[0];
-		$IPS{$a[0]}{$Sample}=$a[-2];
+        $IPS{'#'}{$S}=$Sample{$S};
+            $IPS{$a[0]}{$S}=$a[-2];
 	}
 	close I;
 }
@@ -73,7 +74,7 @@ foreach $x(glob "*.genes.results"){
 #close I;
 
 foreach (sort keys %IPS){
-    print $_;
+    unless($_ eq '#'){print $_;}
     foreach $x(sort keys %Sample){
         print "\t$IPS{$_}{$x}";
     }
