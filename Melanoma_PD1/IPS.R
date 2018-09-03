@@ -59,6 +59,7 @@ mapbw<-function (x) {
 ## Read expression data from tab-delimited text file, with official human gene symbols (HGNC) in the first columns
 ## and expression values (i.e. log2(TPM+1)) for each sample in the other columns
 gene_expression<-read.table("TPM.xls",row.names=1,header=TRUE, sep="\t", dec = ".",check.names=FALSE)
+gene_expression=gene_expression[rowSums(gene_expression)>1,] # try to remove low-expressed genes?
 gene_expression=log2(gene_expression+1)
 sample_names<-names(gene_expression)
 
